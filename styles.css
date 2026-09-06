@@ -235,26 +235,6 @@ h1, h2, h3, h4, h5, h6 { font-size: 18px; }
 .loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,.7); display: flex; align-items: center; justify-content: center; z-index: 300; font-size: 14px; color: var(--text-muted); }
 .hidden { display: none !important; }
 
-/* ---------- Small-screen notice banner (injected by app.js, hidden except on narrow screens) ---------- */
-#small-screen-banner {
-  display: none;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  background: #fff8e1;
-  color: #7a5b00;
-  border-bottom: 1px solid #ffe69c;
-  padding: 8px 14px;
-  font-size: 12.5px;
-  line-height: 1.4;
-  flex-shrink: 0;
-}
-#small-screen-banner span { flex: 1; }
-#small-screen-banner button {
-  background: transparent; border: none; flex-shrink: 0;
-  font-size: 18px; line-height: 1; color: inherit; padding: 0 2px; cursor: pointer;
-}
-
 /* Safe-area padding for notched phones — all four sides, since rotation to
    landscape puts the notch/home-indicator on the side instead of top/bottom */
 .topbar {
@@ -342,8 +322,6 @@ html, body { overflow-x: hidden; max-width: 100%; }
   .time-col { width: 34px; }
   .time-col .hour-label { font-size: 9px; }
   .time-event .t-title { white-space: normal; overflow-wrap: anywhere; }
-
-  #small-screen-banner { display: flex; }
 }
 
 /* ----- Very narrow phones (≤360px) ----- */
