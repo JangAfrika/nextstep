@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Personal Scheduler</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <button class="btn-icon" id="menu-toggle" title="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <div class="brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#1a73e8" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      Personal Scheduler
+    </div>
+    <div class="search-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5f6368" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" id="search-input" placeholder="Search events...">
+    </div>
+    <button class="btn btn-primary" id="create-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+      <span class="create-btn-text">Create</span>
+    </button>
+  </div>
+
+  <div id="search-results" class="agenda-list hidden" style="position:absolute; top:56px; left:16px; right:16px; max-width:480px; z-index:30;"></div>
+
+  <div class="main-row">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="nav-item active" data-section="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg> Today
+      </div>
+      <div class="nav-item" data-section="calendar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 10h18"/></svg> Calendar
+      </div>
+      <div class="nav-item" data-section="availability">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg> Availability
+      </div>
+      <div class="nav-item" data-section="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a7.97 7.97 0 000-6l2-1.5-2-3.4-2.3.9a8 8 0 00-2.1-1.2L14.5 1h-5l-.5 2.8a8 8 0 00-2.1 1.2l-2.3-.9-2 3.4L4.6 9a8 8 0 000 6l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2.1 1.2l.5 2.8h5l.5-2.8a8 8 0 002.1-1.2l2.3.9 2-3.4-2-1.5z"/></svg> Settings
+      </div>
+      <div class="sidebar-section-title">My Calendars</div>
+      <div id="sidebar-categories"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- Dashboard -->
+      <div id="view-dashboard">
+        <h1 class="greeting" id="dashboard-greeting">Good evening, Ebrima</h1>
+        <p class="greeting-date" id="dashboard-date"></p>
+        <div class="card-grid">
+          <div class="card"><h3>Today's Events</h3><div class="big" id="stat-today-count">0</div></div>
+          <div class="card"><h3>Next Event</h3><div class="big" id="stat-next-event" style="font-size:16px">None</div></div>
+          <div class="card"><h3>Available Time</h3><div class="big" id="stat-available">-</div></div>
+        </div>
+        <div class="agenda-list" id="dashboard-agenda"></div>
+      </div>
+
+      <!-- Calendar -->
+      <div id="view-calendar" class="hidden">
+        <div class="calendar-toolbar">
+          <div class="left">
+            <button class="btn-icon" id="cal-prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <button class="btn btn-secondary" id="cal-today">Today</button>
+            <button class="btn-icon" id="cal-next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+            <span class="period-label" id="cal-period-label"></span>
+          </div>
+          <div class="view-switch">
+            <button data-view="day">Day</button>
+            <button data-view="week">Week</button>
+            <button data-view="month" class="active">Month</button>
+          </div>
+        </div>
+
+        <div id="month-view">
+          <div class="month-grid">
+            <div class="month-weekdays"><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div><div>SUN</div></div>
+            <div class="month-days" id="month-days"></div>
+          </div>
+        </div>
+
+        <div id="grid-view" class="hidden">
+          <div class="time-grid-wrap">
+            <div class="time-col" id="time-col"></div>
+            <div class="day-columns" id="day-columns"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Availability -->
+      <div id="view-availability" class="hidden">
+        <h2 id="avail-heading" style="font-weight:400"></h2>
+        <div class="avail-row">
+          <div class="form-group" style="margin:0"><label>Date</label><input type="date" id="avail-date"></div>
+          <div class="form-group" style="margin:0"><label>Minimum free duration</label>
+            <select id="avail-min-duration">
+              <option value="0">Any</option>
+              <option value="15">15 minutes</option>
+              <option value="30" selected>30 minutes</option>
+              <option value="60">1 hour</option>
+              <option value="120">2 hours</option>
+            </select>
+          </div>
+        </div>
+        <div class="avail-list" id="avail-list"></div>
+      </div>
+
+      <!-- Settings -->
+      <div id="view-settings" class="hidden">
+        <h2 style="font-weight:400">Settings</h2>
+        <form id="settings-form" class="card" style="max-width:480px">
+          <div class="form-group"><label>Notification Email</label><input type="email" name="NotificationEmail" required></div>
+          <div class="form-row">
+            <div class="form-group">
+            <label>Morning Start</label>
+            <div class="time-picker" data-target="field-morning-start">
+              <select class="tp-hour" aria-label="Hour"></select><span class="tp-colon">:</span>
+              <select class="tp-minute" aria-label="Minute"></select>
+              <div class="tp-ampm" role="group" aria-label="AM or PM">
+                <button type="button" class="tp-ampm-btn active" data-val="AM">AM</button>
+                <button type="button" class="tp-ampm-btn" data-val="PM">PM</button>
+              </div>
+            </div>
+            <input type="hidden" name="MorningStart" id="field-morning-start">
+          </div>
+            <div class="form-group">
+            <label>Morning End</label>
+            <div class="time-picker" data-target="field-morning-end">
+              <select class="tp-hour" aria-label="Hour"></select><span class="tp-colon">:</span>
+              <select class="tp-minute" aria-label="Minute"></select>
+              <div class="tp-ampm" role="group" aria-label="AM or PM">
+                <button type="button" class="tp-ampm-btn active" data-val="AM">AM</button>
+                <button type="button" class="tp-ampm-btn" data-val="PM">PM</button>
+              </div>
+            </div>
+            <input type="hidden" name="MorningEnd" id="field-morning-end">
+          </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+            <label>Afternoon Start</label>
+            <div class="time-picker" data-target="field-afternoon-start">
+              <select class="tp-hour" aria-label="Hour"></select><span class="tp-colon">:</span>
+              <select class="tp-minute" aria-label="Minute"></select>
+              <div class="tp-ampm" role="group" aria-label="AM or PM">
+                <button type="button" class="tp-ampm-btn active" data-val="AM">AM</button>
+                <button type="button" class="tp-ampm-btn" data-val="PM">PM</button>
+              </div>
+            </div>
+            <input type="hidden" name="AfternoonStart" id="field-afternoon-start">
+          </div>
+            <div class="form-group">
+            <label>Afternoon End</label>
+            <div class="time-picker" data-target="field-afternoon-end">
+              <select class="tp-hour" aria-label="Hour"></select><span class="tp-colon">:</span>
+              <select class="tp-minute" aria-label="Minute"></select>
+              <div class="tp-ampm" role="group" aria-label="AM or PM">
+                <button type="button" class="tp-ampm-btn active" data-val="AM">AM</button>
+                <button type="button" class="tp-ampm-btn" data-val="PM">PM</button>
+              </div>
+            </div>
+            <input type="hidden" name="AfternoonEnd" id="field-afternoon-end">
+          </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+            <label>Evening Start</label>
+            <div class="time-picker" data-target="field-evening-start">
+              <select class="tp-hour" aria-label="Hour"></select><span class="tp-colon">:</span>
+              <select class="tp-minute" aria-label="Minute"></select>
+              <div class="tp-ampm" role="group" aria-label="AM or PM">
+                <button type="button" class="tp-ampm-btn active" data-val="AM">AM</button>
+                <button type="button" class="tp-ampm-btn" data-val="PM">PM</button>
+              </div>
+            </div>
+            <input type="hidden" name="EveningStart" id="field-evening-start">
+          </div>
+            <div class="form-group">
+            <label>Evening End</label>
+            <div class="time-picker" data-target="field-evening-end">
+              <select class="tp-hour" aria-label="Hour"></select><span class="tp-colon">:</span>
+              <select class="tp-minute" aria-label="Minute"></select>
+              <div class="tp-ampm" role="group" aria-label="AM or PM">
+                <button type="button" class="tp-ampm-btn active" data-val="AM">AM</button>
+                <button type="button" class="tp-ampm-btn" data-val="PM">PM</button>
+              </div>
+            </div>
+            <input type="hidden" name="EveningEnd" id="field-evening-end">
+          </div>
+          </div>
+          <div class="form-group"><label>Default Reminder (minutes)</label><input type="number" name="DefaultReminderMinutes" min="0"></div>
+          <button type="submit" class="btn btn-primary">Save Settings</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <button class="fab" id="fab-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button>
+</div>
+
+<!-- Create/Edit/Detail Modal -->
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modal-title">Create schedule</h2>
+      <button class="btn-icon" id="modal-close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div id="form-banner"></div>
+
+      <form id="event-form">
+        <div class="form-group"><label>Event Title</label><input type="text" name="title" id="field-title" required></div>
+        <div class="form-group"><label>Description</label><textarea name="description" id="field-description" rows="2"></textarea></div>
+        <div class="form-row">
+          <div class="form-group"><label>Category</label><select name="category" id="field-category"></select></div>
+          <div class="form-group"><label>Date</label><input type="date" name="date" id="field-date" required></div>
+        </div>
+        <div class="form-group">
+          <label>Start Time</label>
+          <div class="time-picker" data-target="field-start-time">
+            <select class="tp-hour" aria-label="Hour"></select><span class="tp-colon">:</span>
+            <select class="tp-minute" aria-label="Minute"></select>
+            <div class="tp-ampm" role="group" aria-label="AM or PM">
+              <button type="button" class="tp-ampm-btn active" data-val="AM">AM</button>
+              <button type="button" class="tp-ampm-btn" data-val="PM">PM</button>
+            </div>
+          </div>
+          <input type="hidden" name="startTime" id="field-start-time">
+        </div>
+        <div class="form-group">
+          <label>Duration</label>
+          <div class="duration-row">
+            <input type="number" name="durationValue" id="field-duration-value" min="1" value="30" required>
+            <select name="durationUnit" id="field-duration-unit">
+              <option>Minutes</option><option>Hours</option><option>Days</option><option>Months</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Preferred Period</label>
+            <select name="period" id="field-period">
+              <option>Any Time</option><option>Morning</option><option>Afternoon</option><option>Evening</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Reminder</label>
+            <select name="reminder" id="field-reminder">
+              <option value="">None</option>
+              <option value="5">5 minutes before</option>
+              <option value="10">10 minutes before</option>
+              <option value="15">15 minutes before</option>
+              <option value="30">30 minutes before</option>
+              <option value="60">1 hour before</option>
+              <option value="1440">1 day before</option>
+            </select>
+          </div>
+        </div>
+        <div id="suggestions-wrap"></div>
+      </form>
+
+      <div id="detail-view" class="hidden"></div>
+    </div>
+    <div class="modal-footer" id="form-footer">
+      <button type="button" class="btn btn-secondary" id="modal-close-2" onclick="Modal.close()">Cancel</button>
+      <button type="submit" form="event-form" class="btn btn-primary">Save</button>
+    </div>
+    <div class="modal-footer hidden" id="detail-footer">
+      <button type="button" class="btn btn-danger" id="delete-btn">Delete</button>
+      <button type="button" class="btn btn-primary" id="edit-btn">Edit</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toast-wrap"></div>
+<div class="loading-overlay hidden" id="loading-overlay"><span>Loading...</span></div>
+
+<script src="gas-client.js"></script>
+<script src="time-picker.js"></script>
+<script src="app.js"></script>
+<script src="calendar.js"></script>
+<script src="availability.js"></script>
+<script src="modal.js"></script>
+</body>
+</html>
