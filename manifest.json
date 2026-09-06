@@ -3,7 +3,7 @@
   "name": "Next Step",
   "short_name": "Next Step",
   "description": "Manage your day well — see what's next, find free time, and schedule your day at a glance.",
-  "start_url": "/nextstep",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "display_override": ["window-controls-overlay", "standalone", "browser"],
@@ -38,14 +38,14 @@
       "name": "Create schedule",
       "short_name": "Create",
       "description": "Create a new event on your calendar",
-      "url": "/index.html?action=create",
+      "url": "/nextstep?action=create",
       "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "Availability",
       "short_name": "Availability",
       "description": "See your free time today",
-      "url": "/index.html?action=availability",
+      "url": "/nextstep?action=availability",
       "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
     }
   ]
