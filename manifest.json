@@ -38,7 +38,7 @@
       "name": "Create schedule",
       "short_name": "Create",
       "description": "Create a new event on your calendar",
-      "url": "/index.html?action=create",
+      "url": "/nextstep?action=create",
       "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
     },
     {
