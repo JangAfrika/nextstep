@@ -3,7 +3,7 @@
   "name": "Next Step",
   "short_name": "Next Step",
   "description": "Manage your day well — see what's next, find free time, and schedule your day at a glance.",
-  "start_url": "/index.html",
+  "start_url": "/nextstep",
   "scope": "/",
   "display": "standalone",
   "display_override": ["window-controls-overlay", "standalone", "browser"],
