@@ -254,15 +254,13 @@ input, select, textarea { font-family: inherit; font-size: 14px; }
   font-size: 20px; line-height: 1; color: inherit; padding: 0 2px; cursor: pointer;
 }
 
-/* ---------- Responsive ---------- */
+/* Global safety net: nothing should ever force the page to scroll sideways */
+html, body { overflow-x: hidden; max-width: 100%; }
+* { min-width: 0; } /* lets flex/grid children shrink below their content size instead of overflowing */
 
-/* Safe-area padding for notched phones once installed as a PWA */
-.topbar { padding-top: max(10px, env(safe-area-inset-top)); }
-.fab { bottom: max(24px, calc(env(safe-area-inset-bottom) + 16px)); }
-
-/* ----- Tablet & phone (≤900px): collapsible sidebar, floating create button ----- */
-@media (max-width: 900px) {
-  .sidebar { position: fixed; top: 0; bottom: 0; left: 0; z-index: 50; transform: translateX(-100%); box-shadow: var(--shadow-md); width: 260px; }
+/* ----- Tablet & phone (≤1024px): collapsible sidebar, floating create button ----- */
+@media (max-width: 1024px) {
+  .sidebar { position: fixed; top: 0; bottom: 0; left: 0; z-index: 50; transform: translateX(-100%); box-shadow: var(--shadow-md); width: 260px; max-width: 80vw; }
   .sidebar.open { transform: translateX(0); }
   .fab { display: flex; }
   .content { padding: 16px; }
@@ -270,10 +268,11 @@ input, select, textarea { font-family: inherit; font-size: 14px; }
   .topbar .create-btn-text { display: none; }
   .search-box { max-width: none; }
 
-  /* Week/day grid: let it scroll horizontally instead of squeezing 7 columns unreadably thin */
-  .time-grid-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .time-col { position: sticky; left: 0; background: var(--bg); z-index: 4; }
-  .day-columns { min-width: 640px; }
+  /* Week/day grid: columns shrink to fit the screen width — no horizontal scroll */
+  .time-col { width: 44px; }
+  .time-col .hour-label { font-size: 10px; padding-right: 4px; }
+  .time-event { font-size: 10.5px; padding: 3px 4px; }
+  .time-event .t-time { font-size: 9px; }
 }
 
 /* ----- Small tablets / large phones in landscape (≤700px) ----- */
@@ -281,6 +280,7 @@ input, select, textarea { font-family: inherit; font-size: 14px; }
   .card-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
   .month-days { grid-auto-rows: minmax(88px, 1fr); }
   .month-event { font-size: 10px; }
+  .day-col-header .dow { display: none; } /* keep just the date number when columns get tight */
 }
 
 /* ----- Phones (≤480px) ----- */
@@ -312,6 +312,10 @@ input, select, textarea { font-family: inherit; font-size: 14px; }
   .month-cell { padding: 4px; }
   .month-cell .day-num { width: 22px; height: 22px; font-size: 12px; }
 
+  .time-col { width: 34px; }
+  .time-col .hour-label { font-size: 9px; }
+  .time-event .t-title { white-space: normal; overflow-wrap: anywhere; }
+
   #small-screen-banner { display: flex; }
 }
 
@@ -321,6 +325,12 @@ input, select, textarea { font-family: inherit; font-size: 14px; }
   .topbar { gap: 8px; padding: 8px 10px; }
   .topbar .brand { font-size: 16px; }
   .btn-primary .create-btn-text { display: none; }
+}
+
+/* Text that could otherwise force horizontal overflow (long titles, no spaces) always wraps */
+.agenda-title, .month-event, .t-title, .card .big, .greeting,
+.chip, #detail-view, .form-group input, .form-group select, .form-group textarea {
+  overflow-wrap: anywhere;
 }
 
 /* ----- Larger desktops/monitors: give the layout more breathing room ----- */
