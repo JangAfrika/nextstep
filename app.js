@@ -13,7 +13,8 @@ const App = {
 
   CATEGORY_COLORS: {
     work: 'var(--cat-work)', meeting: 'var(--cat-meeting)', teaching: 'var(--cat-teaching)',
-    personal: 'var(--cat-personal)', appointment: 'var(--cat-appointment)', other: 'var(--cat-other)'
+    personal: 'var(--cat-personal)', appointment: 'var(--cat-appointment)', other: 'var(--cat-other)',
+    'google calendar': 'var(--cat-google)'
   },
 
   colorFor(category) {
