@@ -23,7 +23,6 @@ const App = {
   init() {
     this.bindNav();
     this.bindTopbar();
-    this.injectSmallScreenBanner();
     this.showLoading('Loading calendar...');
     google.script.run
       .withSuccessHandler(res => this.onBootstrap(res))
@@ -62,24 +61,6 @@ const App = {
   },
 
   // ---------- Navigation ----------
-  // Shown only on narrow screens (CSS handles the actual show/hide via media
-  // query); dismissing it is remembered for the rest of the browser session.
-  injectSmallScreenBanner() {
-    if (sessionStorage.getItem('nextStepSmallBannerDismissed')) return;
-    const shell = document.querySelector('.app-shell');
-    if (!shell || document.getElementById('small-screen-banner')) return;
-    const banner = document.createElement('div');
-    banner.id = 'small-screen-banner';
-    banner.innerHTML =
-      '<span>Small screen detected — layout has switched to compact mode. Rotate your device or use a wider screen for the full calendar grid.</span>' +
-      '<button type="button" aria-label="Dismiss">&times;</button>';
-    shell.insertBefore(banner, shell.firstChild);
-    banner.querySelector('button').addEventListener('click', () => {
-      banner.remove();
-      sessionStorage.setItem('nextStepSmallBannerDismissed', '1');
-    });
-  },
-
   bindNav() {
     document.querySelectorAll('.nav-item[data-section]').forEach(el => {
       el.addEventListener('click', () => {
