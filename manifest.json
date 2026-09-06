@@ -38,14 +38,14 @@
       "name": "Create schedule",
       "short_name": "Create",
       "description": "Create a new event on your calendar",
-      "url": "/nextstep?action=create",
+      "url": "/index.html?action=create",
       "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "Availability",
       "short_name": "Availability",
       "description": "See your free time today",
-      "url": "/nextstep?action=availability",
+      "url": "/index.html?action=availability",
       "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
     }
   ]
