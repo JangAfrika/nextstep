@@ -18,6 +18,7 @@
   --cat-personal: #188038;
   --cat-appointment: #d93025;
   --cat-other: #5f6368;
+  --cat-google: #00897b;
 }
 
 * { box-sizing: border-box; }
