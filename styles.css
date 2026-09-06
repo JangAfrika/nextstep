@@ -39,8 +39,9 @@ input, select, textarea { font-family: inherit; font-size: 14px; }
   padding: 10px 16px; background: var(--bg); border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
-.topbar .brand { font-size: 20px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+.topbar .brand { font-size: 20px; font-weight: 500; display: flex; align-items: center; gap: 8px; white-space: nowrap; flex-shrink: 0; }
 .topbar .brand svg { width: 26px; height: 26px; }
+.btn-icon svg { width: 20px; height: 20px; flex-shrink: 0; }
 .search-box {
   flex: 1; max-width: 480px; display: flex; align-items: center; gap: 8px;
   background: var(--bg-soft); border-radius: 24px; padding: 8px 16px; border: 1px solid transparent;
