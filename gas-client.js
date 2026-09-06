@@ -14,7 +14,7 @@
 (function () {
   // ==================================================================
   // PASTE YOUR APPS SCRIPT WEB APP URL HERE (Deploy → ends in /exec)
-  const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbxemJ9Veye9EP2PJDQrjQVX2jVcp_A-MphV1SoJJgRGh1iQ80CKon5Yrr-iCDFZ8_h4/exec';
+  const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbzyOTtyhlZN8AZp32OoptNLKaB2cLOFtMeyhmep0WlryFIh70ekkc3AY5oBqjMsb6zp/exec';
   // ==================================================================
 
   // Read-only calls go as GET (fine to be a plain URL); everything else is POST.
