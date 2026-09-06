@@ -80,7 +80,17 @@ const Modal = {
     document.getElementById('modal-title').textContent = 'Edit schedule';
     document.getElementById('field-title').value = e.title;
     document.getElementById('field-description').value = e.description || '';
-    document.getElementById('field-category').value = e.category;
+    const categorySelect = document.getElementById('field-category');
+    if (![...categorySelect.options].some(o => o.value === e.category)) {
+      // Google Calendar-sourced events carry a category that isn't in your
+      // Sheet's category list — add it so the dropdown reflects reality
+      // instead of silently showing whatever option happens to be first.
+      const opt = document.createElement('option');
+      opt.value = e.category;
+      opt.textContent = e.category;
+      categorySelect.appendChild(opt);
+    }
+    categorySelect.value = e.category;
     document.getElementById('field-date').value = e.startDate;
     TimePicker.setValue('field-start-time', e.startTime);
     document.getElementById('field-duration-value').value = e.durationMinutes;
